@@ -10,6 +10,7 @@ import com.openai.models.FunctionDefinition;
 import com.openai.models.FunctionParameters;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.chat.completions.ChatCompletionFunctionTool;
 import com.openai.models.chat.completions.ChatCompletionTool;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,12 +64,14 @@ public class OpenAiApiProvider implements ApiProvider {
                     parametersBuilder.putAdditionalProperty(key, JsonValue.from(value)));
         }
 
-        return ChatCompletionTool.builder()
+        ChatCompletionFunctionTool functionTool = ChatCompletionFunctionTool.builder()
                 .function(FunctionDefinition.builder()
                         .name(tool.getName())
                         .description(tool.getDescription())
                         .parameters(parametersBuilder.build())
                         .build())
                 .build();
+
+        return ChatCompletionTool.ofFunction(functionTool);
     }
 }
