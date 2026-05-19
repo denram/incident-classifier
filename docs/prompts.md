@@ -63,3 +63,28 @@
 - Deve ser adicionado no config.properties um comentário na propriedade ai.provider indicando a opção OPENAI.
 - Deve ser criada a classe a classe OpenaiApi imeplementando a interface ApiProvider e o método getResponse.
 ```
+
+## Prompt 6 - Implementação da classe de classificação do incidente
+
+```
+## Implemente a classe de classificação do incidente.
+- Deve ser criada a classe IncidentClassification.
+- A classe deve fazer uso do validation do Spring Bot.
+- A classe deve ter os atributor String formalizedIncidentText, IncidentCategory category, IncidentSeverity severity e LocalDateTime registeredAt.
+- O atributo com a enum IncidentCategory deverá conter as categorias de incidentes mais comuns em uma empresa. Os valores da enum devem ser em inglês.
+- O atributo com a enum IncidentSeverity poderá ter os valores LOW, MEDIUM e HIGH.
+```
+
+## Prompt 7 - Criação do system prompt
+
+```
+## Crie o system prompt
+- Deve ser criado o prompt e gravado em um arquivo dentro da pasta resources do projeto.
+- O prompt deve ser carregado na inicialização do aplicativo e deve ser atribuido o system prompt da chamada da API de IA configurada.
+- O prompt deve solicitar para a api da IA que faça a análise e classificação do incidente conforme os atributos da classe IncidentClassification.
+- O prompt deve solicitar para a Api da IA retornar somente um JSON com os atributos equivalentes á classe IncidentClassification.
+- O atributo formalizedIncidentText deve conter um texto sumarizado e formalizado do incidente seguindo padrões corporativos.
+- O atributo category deve conter um dos valores da enum IncidentCategory.
+- O atributo severity deve conter um dos valores da enum IncidentSeverity.
+- O atributo registeredAt deve ter a data e hora atual.
+```
