@@ -111,3 +111,71 @@
 - O endpoint deve receber uma String incident e deveolver um objeto da classe IncidentClassification.
 - Caso ocorra uma exceção o endpoint deve retornar uma mensagem informando o erro.
 ```
+
+## Prompt 10 - Reestruturação do repositório para monorepo (backend + frontend)
+
+```
+Este projeto precisa conter a parte de backend e frontend em um repositório só por favor divida a estrutura das pastas de acordo com essa estrutura project/
+│
+├── frontend/
+│   ├── README.md
+│
+├── backend/
+│   ├── README.md
+│
+├── docs/
+│   ├── prompts.md
+│
+└── README.md
+
+Lembrando que a pasta src, target e os arquivos de gitignore, pom.xml e README.md do projeto atual, são referentes ao backend. Ao final das alterações adicione esse prompt no arquivo prompts.md em docs, para registrar o comando feito.
+```
+
+## Prompt 11 - Criação do arquivo de Copilot Instructions
+
+```
+Precisamos criar esse projeto com vibecoding ou seja sem programar ou minimamente programar. Preciso desenvolver a parte do backend. Antes de prosseguir para implementação gostaria de um arquivo com estrutura inicial do projeto, estou utilizando o copilot. Qual seria a melhor opção para ter um arquivo com a estrutura do projeto? readme, copilot instructions, PRD?
+
+Por favor crie o arquivo de instructions com base no que já foi feito no projeto e com base no promptestrutura inicial do projeto. 
+```
+
+## Prompt 12 - Implementação das US-02, US-08 e US-06 (persistência e histórico)
+
+```
+# PERSONA
+Você é um engenheiro de software sênior especialista em Java, Spring Boot e arquitetura backend.
+
+# CONTEXTO
+Estou desenvolvendo uma funcionalidade que utiliza IA para melhorar textos escritos por operadores ao registrar ocorrências/incidentes, transformando descrições simples em registros mais profissionais e padronizados.
+
+A integração com IA já está implementada no projeto.
+
+O backend utiliza Java 25 e Spring Boot.
+
+# TAREFA
+Implemente no backend as funcionalidades referentes às user stories 02, 08 e 06.
+
+Analise o projeto existente antes de implementar.
+
+# REGRAS
+- Utilize como referência o arquivo `copilot-instructions.md`
+- Consulte a documentação existente do projeto
+- Siga o padrão arquitetural já utilizado
+- Não altere funcionalidades não relacionadas às user stories
+- Mantenha consistência de nomenclatura, DTOs, services e controllers
+- Adicione comentários apenas quando necessário
+- Gere código limpo e de fácil manutenção
+
+# CRITÉRIOS DE ACEITE
+- As user stories 02 e 08 devem estar completamente implementadas
+- O código deve compilar sem erros
+- As integrações existentes não devem ser quebradas
+- Os endpoints devem seguir o padrão atual da aplicação
+
+# SAÍDA
+- Implementação completa das user stories 02, 08 e 06.
+- Explicação breve das alterações realizadas
+- Atualização do arquivo `prompts.md` com o prompt utilizado
+```
+
+

@@ -26,4 +26,7 @@ public class IncidentClassification {
 
     @NotNull
     private LocalDateTime registeredAt;
+
+    @NotBlank
+    private String suggestedAction;
 }
