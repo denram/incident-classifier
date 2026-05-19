@@ -88,3 +88,26 @@
 - O atributo severity deve conter um dos valores da enum IncidentSeverity.
 - O atributo registeredAt deve ter a data e hora atual.
 ```
+
+## Prompt 8 - Criação da classe de serviço
+
+```
+## Crie a classe de serviço
+- Deve ser criada a classe IncidentClassifierService
+- Essa classe deve ter um método público incidentClassifier para classificação do incidente.
+- O método deve receber como parâmetro uma String (prompt do usuário) e deve retornar um objeto da classe IncidentClassification.
+- O método deve utilizar a interface ApiProvider e utilizar a implementação de acordo com a api configurada na propriedade ai.provider do arquivo config.properties.
+- O método deve passar para a Api o System Prompt do arquivo da pasta resources e deve passar o User prompt recebido como parâmetro.
+- Deve ser feita a chamada para a Api da IA solicitando a classificação do incidente e o retorno deve ser convertido para um objeto da classe IncidentClassification. Caso não seja possível converter, deve ser lançada uma exceção.
+- O método deve retornar um objeto IncidentClassification ou lançar uma exceção caso ocorra algum erro.
+```
+
+## Prompt 9 - Criação do endpoint da API REST
+
+```
+## Crie o endpoint da Api 
+- Deve ser criada a Api REST o endpoint /incidentClassifier 
+- Esse endpoint deve fazer a chamada para o método incidentClassifier da classe IncidentClassifierService.
+- O endpoint deve receber uma String incident e deveolver um objeto da classe IncidentClassification.
+- Caso ocorra uma exceção o endpoint deve retornar uma mensagem informando o erro.
+```
