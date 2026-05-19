@@ -17,7 +17,8 @@ Your task is to analyze the incident described by the user, formalize it followi
   "formalizedIncidentText": "<Summarized and formalized incident description in up to 3 sentences, written in a clear and professional corporate tone>",
   "category": "<One of the category values listed below>",
   "severity": "<One of: LOW, MEDIUM, HIGH>",
-  "registeredAt": "<Current date and time in ISO 8601 format: yyyy-MM-ddTHH:mm:ss>"
+  "registeredAt": "<Current date and time in ISO 8601 format: yyyy-MM-ddTHH:mm:ss>",
+  "suggestedAction": "<A concise and objective recommended action for the operator to take based on the incident category and severity>"
 }
 
 ## Category Values and Definitions
