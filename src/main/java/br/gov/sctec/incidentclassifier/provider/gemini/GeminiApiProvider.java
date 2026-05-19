@@ -3,9 +3,11 @@ package br.gov.sctec.incidentclassifier.provider.gemini;
 import br.gov.sctec.incidentclassifier.model.Tool;
 import br.gov.sctec.incidentclassifier.provider.ApiProvider;
 import com.google.genai.Client;
+import com.google.genai.types.Content;
 import com.google.genai.types.FunctionDeclaration;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
+import com.google.genai.types.Part;
 import com.google.genai.types.Schema;
 import com.google.genai.types.Type;
 import jakarta.annotation.PostConstruct;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +42,10 @@ public class GeminiApiProvider implements ApiProvider {
 
     @Override
     public String getResponse(String systemPrompt, String userPrompt, List<Tool> tools) {
+        Content systemInstruction = Content.fromParts(Part.fromText(systemPrompt));
+
         GenerateContentConfig.Builder configBuilder = GenerateContentConfig.builder()
-                .systemInstruction(systemPrompt)
+                .systemInstruction(systemInstruction)
                 .maxOutputTokens(maxOutputTokens);
 
         if (tools != null && !tools.isEmpty()) {
@@ -53,13 +58,14 @@ public class GeminiApiProvider implements ApiProvider {
     }
 
     private com.google.genai.types.Tool buildGeminiTool(List<Tool> tools) {
-        List<FunctionDeclaration> declarations = tools.stream()
-                .map(tool -> FunctionDeclaration.builder()
-                        .name(tool.getName())
-                        .description(tool.getDescription())
-                        .parameters(buildSchema(tool.getInputSchema()))
-                        .build())
-                .toList();
+        List<FunctionDeclaration> declarations = new ArrayList<>();
+        for (Tool tool : tools) {
+            declarations.add(FunctionDeclaration.builder()
+                    .name(tool.getName())
+                    .description(tool.getDescription())
+                    .parameters(buildSchema(tool.getInputSchema()))
+                    .build());
+        }
 
         return com.google.genai.types.Tool.builder()
                 .functionDeclarations(declarations)
@@ -103,7 +109,7 @@ public class GeminiApiProvider implements ApiProvider {
         return schemaBuilder.build();
     }
 
-    private Type mapType(String typeName) {
+    private Type.Known mapType(String typeName) {
         return switch (typeName.toUpperCase()) {
             case "STRING" -> Type.Known.STRING;
             case "NUMBER" -> Type.Known.NUMBER;
