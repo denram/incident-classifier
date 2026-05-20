@@ -1,0 +1,25 @@
+@use 'variables' as *;
+
+@mixin mobile-only {
+  @media (max-width: 599px) { @content; }
+}
+
+@mixin tablet-up {
+  @media (min-width: 600px) { @content; }
+}
+
+@mixin desktop-up {
+  @media (min-width: 960px) { @content; }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-elevation {
+  background: $color-surface;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+}
