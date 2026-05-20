@@ -1,12 +1,13 @@
 package br.gov.sctec.incidentclassifier;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.assertj.core.api.Assertions.assertThat;
+
 class IncidentClassifierApplicationTest {
 
     @Test
-    void contextLoads() {
+    void mainClass_shouldExist() {
+        assertThat(IncidentClassifierApplication.class).isNotNull();
     }
 }

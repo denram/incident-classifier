@@ -178,4 +178,25 @@ Analise o projeto existente antes de implementar.
 - Atualização do arquivo `prompts.md` com o prompt utilizado
 ```
 
+## Prompt 13 - Implementação dos testes automatizados do backend
+
+```
+# PERSONA
+Você é um engenheiro de software sênior, especialista na criação de suíte de testes unitários em Java.
+
+# TAREFA
+Implemente os testes unitários para o backend. Analise o projeto existente antes de implementar os cenários de testes.
+
+# REGRAS
+- Cobertura de testes mínima de 30%
+- Para melhor entendimento do projeto, utilize como referência os arquivos `copilot-instructions.md` e `user-stories.md`
+- Utilize o ecossistema do JUnit 5 e do Spring Boot Starter Test para criação dos testes unitários do backend, adequado a um projeto que utiliza Java 25 + Maven + Spring Boot
+- Não altere funcionalidades definidas no backend, o foco é a criação da suíte de testes unitários
+
+# CRITÉRIOS DE ACEITE
+- Os testes unitários criados devem passar todos (sem testes quebrados)
+- Ao final, traga a quantidade de testes criados e o percentual de cobertura de testes atingido para o backend
+- Ao final, atualize também o arquivo `prompts.md` com o prompt utilizado
+```
+
 
