@@ -1,0 +1,45 @@
+@use 'theme';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: $font-family;
+  background-color: $color-bg;
+  color: $color-text;
+}
+
+.mat-mdc-snack-bar-container {
+  &.notification-success .mdc-snackbar__surface {
+    background-color: $severity-low;
+    color: #fff;
+  }
+
+  &.notification-error .mdc-snackbar__surface {
+    background-color: $severity-high;
+    color: #fff;
+  }
+}
+
+.page-container {
+  padding: $spacing-lg;
+  max-width: 960px;
+  margin: 0 auto;
+
+  @include mobile-only {
+    padding: $spacing-md;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-card {
+  border-radius: $border-radius !important;
+}

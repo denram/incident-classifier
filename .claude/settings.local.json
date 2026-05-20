@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:\\\\Desenvolvimento\\\\sctech\\\\incident-classifier\\\\prompts\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Desenvolvimento\\\\sctech\\\\incident-classifier\\\\backend\\\\src\\\\main\\\\java\\\\br\\\\gov\\\\sctec\\\\incidentclassifier\\\\\" -Recurse -Filter \"*.java\" | Select-Object FullName | Sort-Object FullName)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Desenvolvimento\\sctech\\incident-classifier"
+    ]
+  }
+}

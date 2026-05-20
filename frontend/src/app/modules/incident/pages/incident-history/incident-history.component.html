@@ -1,0 +1,83 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">
+      <mat-icon>history</mat-icon>
+      Histórico de Incidentes
+    </h1>
+    <button mat-icon-button (click)="reload()" matTooltip="Recarregar" [disabled]="(loading$ | async) ?? false">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <app-loading-spinner
+    [isLoading]="(loading$ | async) ?? false"
+    message="Carregando histórico..."
+  ></app-loading-spinner>
+
+  <app-error-alert
+    [show]="!!(error$ | async)"
+    [message]="(error$ | async) ?? ''"
+  ></app-error-alert>
+
+  <mat-card *ngIf="!(loading$ | async)" class="table-card">
+    <ng-container *ngIf="dataSource.data.length > 0; else emptyState">
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" matSort class="incidents-table">
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+            <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="registeredAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Data/Hora</th>
+            <td mat-cell *matCellDef="let row">{{ row.registeredAt | formatDate }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoria</th>
+            <td mat-cell *matCellDef="let row">
+              <app-incident-category-badge [category]="row.category"></app-incident-category-badge>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="severity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Severidade</th>
+            <td mat-cell *matCellDef="let row">
+              <app-incident-severity-badge [severity]="row.severity"></app-incident-severity-badge>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="originalText">
+            <th mat-header-cell *matHeaderCellDef>Descrição Original</th>
+            <td mat-cell *matCellDef="let row" class="text-cell">
+              <span [matTooltip]="row.originalText" matTooltipClass="multiline-tooltip">
+                {{ row.originalText }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="suggestedAction">
+            <th mat-header-cell *matHeaderCellDef>Ação Sugerida</th>
+            <td mat-cell *matCellDef="let row" class="text-cell">
+              <span [matTooltip]="row.suggestedAction" matTooltipClass="multiline-tooltip">
+                {{ row.suggestedAction }}
+              </span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <p class="record-count">{{ dataSource.data.length }} registro(s) encontrado(s)</p>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <div class="empty-state" *ngIf="!(error$ | async)">
+        <mat-icon>inbox</mat-icon>
+        <p>Nenhum incidente registrado ainda.</p>
+      </div>
+    </ng-template>
+  </mat-card>
+</div>
