@@ -37,7 +37,7 @@ class IncidentClassifierServiceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         stubApiProvider = new StubApiProvider();
-        service = new IncidentClassifierService(stubApiProvider, systemPrompt, objectMapper, incidentRepository);
+        service = new IncidentClassifierService(stubApiProvider, systemPrompt, objectMapper, incidentRepository, List.of());
         incidentRepository.deleteAll();
     }
 

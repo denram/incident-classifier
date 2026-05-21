@@ -3,6 +3,7 @@ package br.gov.sctec.incidentclassifier.service;
 import br.gov.sctec.incidentclassifier.exception.IncidentClassificationException;
 import br.gov.sctec.incidentclassifier.model.IncidentClassification;
 import br.gov.sctec.incidentclassifier.model.IncidentRecord;
+import br.gov.sctec.incidentclassifier.model.Tool;
 import br.gov.sctec.incidentclassifier.provider.ApiProvider;
 import br.gov.sctec.incidentclassifier.repository.IncidentRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,22 +22,25 @@ public class IncidentClassifierService {
     private final String systemPrompt;
     private final ObjectMapper objectMapper;
     private final IncidentRepository incidentRepository;
+    private final List<Tool> classificationTools;
 
     public IncidentClassifierService(
             ApiProvider apiProvider,
             @Qualifier("incidentClassifierSystemPrompt") String systemPrompt,
             ObjectMapper objectMapper,
-            IncidentRepository incidentRepository) {
+            IncidentRepository incidentRepository,
+            List<Tool> classificationTools) {
         this.apiProvider = apiProvider;
         this.systemPrompt = systemPrompt;
         this.objectMapper = objectMapper;
         this.incidentRepository = incidentRepository;
+        this.classificationTools = classificationTools;
     }
 
     public IncidentClassification incidentClassifier(String userPrompt) {
         log.info("Starting incident classification");
 
-        String aiResponse = apiProvider.getResponse(systemPrompt, userPrompt, null);
+        String aiResponse = apiProvider.getResponse(systemPrompt, userPrompt, classificationTools);
         String cleanedResponse = cleanJsonResponse(aiResponse);
 
         try {
@@ -68,7 +72,6 @@ public class IncidentClassifierService {
         if (response == null || response.isBlank()) {
             throw new IncidentClassificationException("AI provider returned an empty response");
         }
-        // Strip markdown code fences if the AI wraps the JSON in ```json ... ```
         String cleaned = response.strip();
         if (cleaned.startsWith("```")) {
             cleaned = cleaned.replaceFirst("^```(?:json)?\\s*", "");
@@ -78,4 +81,3 @@ public class IncidentClassifierService {
         return cleaned;
     }
 }
-

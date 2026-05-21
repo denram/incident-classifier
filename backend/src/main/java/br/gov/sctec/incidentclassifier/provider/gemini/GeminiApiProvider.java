@@ -2,8 +2,10 @@ package br.gov.sctec.incidentclassifier.provider.gemini;
 
 import br.gov.sctec.incidentclassifier.model.Tool;
 import br.gov.sctec.incidentclassifier.provider.ApiProvider;
+import br.gov.sctec.incidentclassifier.service.ToolExecutor;
 import com.google.genai.Client;
 import com.google.genai.types.Content;
+import com.google.genai.types.FunctionCall;
 import com.google.genai.types.FunctionDeclaration;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
@@ -11,6 +13,7 @@ import com.google.genai.types.Part;
 import com.google.genai.types.Schema;
 import com.google.genai.types.Type;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -22,6 +25,7 @@ import java.util.Map;
 
 @Component
 @ConditionalOnProperty(name = "ai.provider", havingValue = "gemini")
+@RequiredArgsConstructor
 public class GeminiApiProvider implements ApiProvider {
 
     @Value("${ai.gemini.api-key}")
@@ -33,6 +37,7 @@ public class GeminiApiProvider implements ApiProvider {
     @Value("${ai.gemini.max-output-tokens}")
     private int maxOutputTokens;
 
+    private final ToolExecutor toolExecutor;
     private Client client;
 
     @PostConstruct
@@ -52,7 +57,24 @@ public class GeminiApiProvider implements ApiProvider {
             configBuilder.tools(List.of(buildGeminiTool(tools)));
         }
 
-        GenerateContentResponse response = client.models.generateContent(model, userPrompt, configBuilder.build());
+        List<Content> contents = new ArrayList<>();
+        contents.add(Content.fromParts(Part.fromText(userPrompt)));
+
+        GenerateContentResponse response = client.models.generateContent(model, contents, configBuilder.build());
+
+        List<FunctionCall> functionCalls = response.functionCalls();
+        if (functionCalls != null && !functionCalls.isEmpty()) {
+            FunctionCall call = functionCalls.get(0);
+            String toolName = call.name().orElse("");
+            String result = toolExecutor.execute(toolName);
+
+            Content modelContent = response.candidates().orElse(List.of()).get(0).content().orElseThrow();
+            contents.add(modelContent);
+            contents.add(Content.fromParts(Part.fromFunctionResponse(toolName, Map.of("result", result))));
+
+            GenerateContentResponse finalResponse = client.models.generateContent(model, contents, configBuilder.build());
+            return finalResponse.text();
+        }
 
         return response.text();
     }

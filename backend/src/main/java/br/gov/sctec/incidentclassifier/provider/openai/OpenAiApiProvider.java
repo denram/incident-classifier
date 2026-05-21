@@ -2,6 +2,7 @@ package br.gov.sctec.incidentclassifier.provider.openai;
 
 import br.gov.sctec.incidentclassifier.model.Tool;
 import br.gov.sctec.incidentclassifier.provider.ApiProvider;
+import br.gov.sctec.incidentclassifier.service.ToolExecutor;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.core.JsonValue;
@@ -11,16 +12,22 @@ import com.openai.models.FunctionParameters;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionFunctionTool;
+import com.openai.models.chat.completions.ChatCompletionMessage;
+import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.chat.completions.ChatCompletionTool;
+import com.openai.models.chat.completions.ChatCompletionToolMessageParam;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
 @ConditionalOnProperty(name = "ai.provider", havingValue = "openai")
+@RequiredArgsConstructor
 public class OpenAiApiProvider implements ApiProvider {
 
     @Value("${ai.openai.api-key}")
@@ -32,6 +39,7 @@ public class OpenAiApiProvider implements ApiProvider {
     @Value("${ai.openai.max-tokens}")
     private int maxTokens;
 
+    private final ToolExecutor toolExecutor;
     private OpenAIClient client;
 
     @PostConstruct
@@ -54,7 +62,27 @@ public class OpenAiApiProvider implements ApiProvider {
         }
 
         ChatCompletion completion = client.chat().completions().create(paramsBuilder.build());
-        return completion.choices().get(0).message().content().orElse("");
+        ChatCompletionMessage message = completion.choices().get(0).message();
+
+        List<ChatCompletionMessageToolCall> toolCalls = message.toolCalls()
+                .stream().flatMap(Collection::stream).toList();
+
+        if (!toolCalls.isEmpty()) {
+            paramsBuilder.addMessage(message);
+            for (ChatCompletionMessageToolCall toolCall : toolCalls) {
+                String toolName = toolCall.asFunction().function().name();
+                String toolCallId = toolCall.asFunction().id();
+                String result = toolExecutor.execute(toolName);
+                paramsBuilder.addMessage(ChatCompletionToolMessageParam.builder()
+                        .toolCallId(toolCallId)
+                        .content(result)
+                        .build());
+            }
+            ChatCompletion finalCompletion = client.chat().completions().create(paramsBuilder.build());
+            return finalCompletion.choices().get(0).message().content().orElse("");
+        }
+
+        return message.content().orElse("");
     }
 
     private ChatCompletionTool buildTool(Tool tool) {
