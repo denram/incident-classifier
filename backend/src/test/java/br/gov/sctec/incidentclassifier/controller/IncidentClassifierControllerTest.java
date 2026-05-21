@@ -138,7 +138,7 @@ class IncidentClassifierControllerTest {
         private String lastIncidentText;
 
         StubIncidentClassifierService() {
-            super(null, null, null, null);
+            super(null, null, null, null, null);
         }
 
         void setClassification(IncidentClassification classification) {
