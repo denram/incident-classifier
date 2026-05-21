@@ -84,3 +84,11 @@
 ## As respostas da classificação de incidentes devem ser geradas em Português do Brasil. Ajuste o arquivo backend/src/main/resources/prompts/incident-classifier-system-prompt para que o conteúdo seja em Português e também solicite a resposta da IA em Português. O conteúdo do prompt não deve ser alterado. Somente altere a linguagem.
 
 ## Crie uma Tool que obtenha a data e hora atual do aplicativo. Essa tool deve ser usada pelas Apis de IA para atribuir o valor no campo registeredAt.ull request com a descrição do que foi implementado.
+
+## Crie o MockApiProvider
+- A classe MockApiProvider deve implementar a interface ApiProvider.
+- Deve simular o retorno de um JSOn compatível com a classe IncidentClassification.
+- As regras de classificação devem verificar algum padrão de palavras chave contidas no texto que tenham significado semelhante com as chaves da IncidentCategory e IncidentSeverity.
+- O campo formalizedIncidentText pode ter o mesmo texto do incidente fornecido pelo usuário.
+- O campo registeredAt deve ter a data e hora atual do aplicativo.
+- O MockProvider deve poder ser selecionado através de uma opção no arquivo config.properties.
