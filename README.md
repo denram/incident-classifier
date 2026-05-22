@@ -179,6 +179,6 @@ incident-classifier/
 | ------------- | -------------------------------------------- |
 | Backend       | [backend/README.md](backend/README.md)       |
 | Frontend      | [frontend/README.md](frontend/README.md)     |
-| User Stories  | [docs/user-stories.md](docs/user-stories.md) |
+| User Stories  | [docs/user-stories.md](docs/USER_STORIES.md) |
 | PRD           | [docs/PRD.md](docs/PRD.md)                   |
-| Diagramas UML | [docs/DIAGRAMAS.md](docs/DIAGRAMAS.md)       |
+| Diagramas UML | [docs/DIAGRAMAS.md](docs/DIAGRAMA_UML.md)    |
