@@ -1,13 +1,17 @@
+
+
+
 # Sistema Inteligente de Classificação de Ocorrências - SICO
 
 A **SICO** (Sistema Inteligente de Classificação de Ocorrências) é uma ferramenta que ajuda operadores de portaria a registrar ocorrências em linguagem natural. O sistema utiliza uma LLM para transformar o texto digitado pelo operador em um registro profissional, padronizado e acionável, classificando a ocorrência, definindo sua gravidade e sugerindo as próximas ações.
 
-##Equipe 3##
-Denis
-Jordan
-Lucas Ivan
-Minéia Maschio
-Schasta Jensen
+## Projeto da Equipe 3 ##
+
+- Denis
+- Jordan
+- Lucas Ivan
+- Minéia Maschio
+- Schasta Jensen
 
 ## Sumário
 
